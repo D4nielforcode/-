@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "흔들어! 포춘쿠키",
+    "slug": "fortune-cookie-shake",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1033"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fortunecookie.shake",
+      "infoPlist": {
+        "NSMotionUsageDescription": "흔들기 감지를 위해 모션 센서를 사용합니다.",
+        "UIBackgroundModes": ["fetch", "processing"]
+      }
+    },
+    "android": {
+      "package": "com.fortunecookie.shake",
+      "permissions": [
+        "VIBRATE",
+        "WAKE_LOCK",
+        "RECEIVE_BOOT_COMPLETED",
+        "FOREGROUND_SERVICE",
+        "POST_NOTIFICATIONS"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1a1033"
+      }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ff5e7e"
+        }
+      ]
+    ]
+  }
+}
