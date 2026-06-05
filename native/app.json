@@ -16,7 +16,10 @@
       "bundleIdentifier": "com.fortunecookie.shake",
       "infoPlist": {
         "NSMotionUsageDescription": "흔들기 감지를 위해 모션 센서를 사용합니다.",
-        "UIBackgroundModes": ["fetch", "processing"]
+        "NSLocationWhenInUseUsageDescription": "백그라운드에서 흔들기 감지를 유지하기 위해 위치 권한이 필요합니다 (실제 위치 정보는 사용·저장하지 않습니다).",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "백그라운드에서 흔들기 감지를 유지하기 위해 위치 권한이 필요합니다 (실제 위치 정보는 사용·저장하지 않습니다).",
+        "NSLocationAlwaysUsageDescription": "백그라운드에서 흔들기 감지를 유지하기 위해 위치 권한이 필요합니다 (실제 위치 정보는 사용·저장하지 않습니다).",
+        "UIBackgroundModes": ["location", "fetch", "processing"]
       }
     },
     "android": {
@@ -26,6 +29,7 @@
         "WAKE_LOCK",
         "RECEIVE_BOOT_COMPLETED",
         "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_SPECIAL_USE",
         "POST_NOTIFICATIONS"
       ],
       "adaptiveIcon": {

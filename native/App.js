@@ -12,7 +12,8 @@ import {
 import { Accelerometer } from "expo-sensors";
 import * as Notifications from "expo-notifications";
 import * as Haptics from "expo-haptics";
-import { pickFortune } from "./fortunes";
+import { FORTUNES, pickFortune } from "./fortunes";
+import { startBackgroundShake, stopBackgroundShake } from "./modules/shake-bg";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -30,6 +31,7 @@ export default function App() {
     "핸드폰을 흔들면 오늘의 운세가 나옵니다 ✨"
   );
   const [listening, setListening] = useState(false);
+  const [bgOn, setBgOn] = useState(false);
   const [permissionOk, setPermissionOk] = useState(false);
   const lastShakeRef = useRef(0);
   const subRef = useRef(null);
@@ -149,6 +151,34 @@ export default function App() {
               <Text style={styles.secondaryBtnText}>⏸ 중지</Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={[styles.bgBtn, bgOn && styles.bgBtnOn]}
+            onPress={async () => {
+              if (bgOn) {
+                await stopBackgroundShake();
+                setBgOn(false);
+              } else {
+                Alert.alert(
+                  "백그라운드 감지 켜기",
+                  "앱을 닫아도 흔들기를 감지합니다.\n\n• iOS는 백그라운드 유지를 위해 위치 권한(항상)이 필요합니다. 실제 위치 정보는 사용·저장하지 않습니다.\n• Android는 상단에 '감지 중' 알림이 표시됩니다.\n• 배터리 소모가 증가합니다.",
+                  [
+                    { text: "취소", style: "cancel" },
+                    {
+                      text: "켜기",
+                      onPress: async () => {
+                        await startBackgroundShake(FORTUNES);
+                        setBgOn(true);
+                      },
+                    },
+                  ]
+                );
+              }
+            }}
+          >
+            <Text style={styles.bgBtnText}>
+              {bgOn ? "🌙 백그라운드 감지 ON (탭하여 끄기)" : "🌙 백그라운드 감지 켜기"}
+            </Text>
+          </TouchableOpacity>
         )}
         <Text style={styles.status}>
           {listening ? "흔들기 감지 중… 핸드폰을 흔들어보세요!" : "버튼을 눌러 시작하세요"}
@@ -203,4 +233,16 @@ const styles = StyleSheet.create({
   },
   secondaryBtnText: { color: "#fff", fontSize: 14, fontWeight: "500" },
   status: { color: "#fff", fontSize: 12, opacity: 0.5, marginTop: 4 },
+  bgBtn: {
+    marginTop: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.25)",
+    width: "100%",
+    alignItems: "center",
+  },
+  bgBtnOn: { backgroundColor: "rgba(255,94,126,0.25)", borderColor: "#ff5e7e" },
+  bgBtnText: { color: "#fff", fontSize: 13, fontWeight: "500" },
 });
