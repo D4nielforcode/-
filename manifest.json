@@ -1,0 +1,14 @@
+{
+  "name": "흔들어! 포춘쿠키",
+  "short_name": "포춘쿠키",
+  "description": "핸드폰을 흔들면 랜덤 운세를 알림으로 보내주는 앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1033",
+  "theme_color": "#1a1033",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
