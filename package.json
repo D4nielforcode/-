@@ -1,0 +1,15 @@
+{
+  "name": "clawd-on-desk",
+  "version": "1.0.0",
+  "description": "Clawd – a cute desktop mascot that reacts to Claude Code activity",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "setup": "node scripts/setup.js"
+  },
+  "keywords": ["claude", "mascot", "desktop", "electron"],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.3.3"
+  }
+}

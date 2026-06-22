@@ -1,0 +1,10 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 160px;
+  height: 160px;
+  background: transparent;
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+canvas { display: block; }
