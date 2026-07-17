@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#111111" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>FILM CAM 27 · 일회용 필름카메라</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 홈: 카메라 -->
+      <section id="screen-camera" class="screen is-active" aria-label="카메라">
+        <div class="camera">
+          <div class="camera__top">
+            <div class="camera__brand">
+              <span class="camera__brand-name">FILM CAM</span>
+              <span class="camera__brand-model">MODEL 27</span>
+            </div>
+            <div class="camera__counter" aria-label="남은 컷 수">
+              <span class="camera__counter-label">EXP.</span>
+              <span id="counter" class="camera__counter-num">27</span>
+            </div>
+          </div>
+
+          <div class="camera__face">
+            <div class="camera__lens" aria-hidden="true">
+              <div class="camera__lens-ring">
+                <div class="camera__lens-inner">
+                  <div class="camera__lens-glass"></div>
+                </div>
+              </div>
+              <span class="camera__lens-label">30mm f/10</span>
+            </div>
+
+            <div class="camera__viewfinder" aria-label="뷰파인더">
+              <div class="camera__viewfinder-hole">
+                <div class="camera__vf-frame">
+                  <span class="vf-bracket vf-bracket--tl"></span>
+                  <span class="vf-bracket vf-bracket--tr"></span>
+                  <span class="vf-bracket vf-bracket--bl"></span>
+                  <span class="vf-bracket vf-bracket--br"></span>
+                </div>
+              </div>
+              <span class="camera__viewfinder-label">VIEWFINDER</span>
+            </div>
+
+            <div class="camera__flash" aria-hidden="true">
+              <div class="camera__flash-bulb"></div>
+              <span class="camera__flash-label">FLASH</span>
+            </div>
+          </div>
+
+          <div class="camera__bottom">
+            <button
+              id="shutter"
+              class="camera__shutter"
+              type="button"
+              aria-label="셔터"
+            >
+              <span class="camera__shutter-inner"></span>
+            </button>
+            <div class="camera__wind" aria-hidden="true">
+              <div class="camera__wind-wheel">
+                <div class="camera__wind-notch"></div>
+                <div class="camera__wind-notch"></div>
+                <div class="camera__wind-notch"></div>
+                <div class="camera__wind-notch"></div>
+              </div>
+              <span class="camera__wind-label">WIND</span>
+            </div>
+          </div>
+
+          <div class="camera__strap-hole camera__strap-hole--l"></div>
+          <div class="camera__strap-hole camera__strap-hole--r"></div>
+        </div>
+
+        <p id="status" class="status" role="status" aria-live="polite">
+          셔터를 눌러 촬영을 시작하세요
+        </p>
+
+        <div id="flash-overlay" class="flash-overlay" aria-hidden="true"></div>
+      </section>
+
+      <!-- 현상소 -->
+      <section id="screen-lab" class="screen" aria-label="현상소" hidden>
+        <div class="lab">
+          <h1 class="lab__title">DEVELOPING…</h1>
+          <p class="lab__sub">암실에서 필름을 현상 중입니다</p>
+          <div class="lab__filmstrip" id="filmstrip"></div>
+          <button id="to-gallery" class="btn btn--yellow" type="button" hidden>
+            갤러리 열기 →
+          </button>
+        </div>
+      </section>
+
+      <!-- 갤러리 -->
+      <section id="screen-gallery" class="screen" aria-label="갤러리" hidden>
+        <header class="gallery__header">
+          <h1 class="gallery__title">MY ROLL</h1>
+          <button id="new-roll" class="btn btn--ghost" type="button">
+            새 필름 넣기
+          </button>
+        </header>
+        <div class="gallery__grid" id="gallery-grid"></div>
+      </section>
+
+      <!-- 권한/에러 -->
+      <div id="permission" class="modal" hidden>
+        <div class="modal__card">
+          <h2 class="modal__title">카메라 권한이 필요합니다</h2>
+          <p class="modal__msg" id="permission-msg">
+            촬영을 위해 카메라 사용을 허용해주세요.
+          </p>
+          <button id="retry" class="btn btn--yellow" type="button">다시 시도</button>
+        </div>
+      </div>
+    </div>
+
+    <video id="hidden-video" playsinline muted autoplay></video>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
