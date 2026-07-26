@@ -20,44 +20,52 @@ npm install
 npm run dev
 ```
 
-`npm run dev`는 `http://localhost:5173`에서 뜹니다.
-같은 폰에서 테스트하려면 같은 네트워크에서 `http://<PC의 로컬 IP>:5173`으로 접속.
+Vite에 `@vitejs/plugin-basic-ssl`을 붙여놨기 때문에 dev 서버가
+**자동으로 자체 서명 HTTPS**로 뜹니다:
 
-## ⚠️ HTTPS가 필요합니다
+```
+➜  Local:   https://localhost:5173/
+➜  Network: https://192.168.x.x:5173/   ← 폰에서 이 주소로 접속
+```
+
+## 📱 폰에서 실행하기 (메인 시나리오)
+
+1. PC와 폰이 **같은 Wi-Fi**에 붙어 있어야 합니다.
+2. PC에서 `npm run dev` 후, 콘솔에 뜬 **Network 주소**를 폰 브라우저에 입력.
+   - iPhone: Safari
+   - Android: Chrome
+3. 자체 서명 인증서라 **보안 경고**가 뜹니다. 우회 방법:
+   - **iOS Safari** — "자세히 보기" → "이 웹사이트 방문" → "웹사이트 방문"
+   - **Android Chrome** — "고급" → "안전하지 않음(사이트 이름)으로 이동"
+4. 카메라 권한 허용 → 촬영 시작.
+
+> 개발 목적의 자체 서명 인증서를 신뢰하는 것뿐이니 걱정 마세요.
+> 배포판(Vercel/Netlify/Cloudflare Pages 등)에서는 정식 인증서를 씁니다.
+
+### PC에서만 확인하고 싶다면
+
+`http://localhost:5173`도 동작합니다 (브라우저는 `localhost`를 보안 컨텍스트로 인정).
+HTTPS를 완전히 끄고 싶다면:
+
+```bash
+NO_HTTPS=1 npm run dev
+```
+
+### 폰에서 인증서 경고를 아예 피하고 싶다면 (선택)
+
+터널 서비스를 쓰면 진짜 HTTPS 도메인이 부여되어 경고가 안 뜹니다:
+
+```bash
+npx cloudflared tunnel --url http://localhost:5173
+# 또는
+npx localtunnel --port 5173
+```
+
+## ⚠️ 왜 HTTPS가 필요한가
 
 브라우저는 보안 컨텍스트(**HTTPS 또는 `localhost`**)에서만
-`getUserMedia`(웹캠 접근)를 허용합니다.
-
-- **PC에서 localhost 접속:** HTTP여도 동작 (`http://localhost:5173`).
-- **모바일에서 PC를 IP로 접속:** HTTP 사용 시 카메라 권한이 거부됩니다.
-- **배포 시:** 반드시 HTTPS로 서빙하세요 (Vercel/Netlify/Cloudflare Pages 등은 기본 HTTPS).
-
-### 폰에서 개발 서버를 테스트하려면
-
-가장 쉬운 방법 두 가지:
-
-1. **`localhost` 터널** (권장)
-   ```bash
-   npx localtunnel --port 5173
-   # 또는
-   npx cloudflared tunnel --url http://localhost:5173
-   ```
-   발급받은 `https://…` URL을 폰에서 여세요.
-
-2. **로컬 HTTPS**
-   `mkcert`로 로컬 인증서를 만든 뒤 `vite.config.js`에 아래처럼 추가:
-   ```js
-   import fs from 'node:fs'
-   export default defineConfig({
-     server: {
-       host: true,
-       https: {
-         key: fs.readFileSync('./localhost-key.pem'),
-         cert: fs.readFileSync('./localhost.pem'),
-       },
-     },
-   })
-   ```
+`getUserMedia`(웹캠 접근)를 허용합니다. LAN IP로 폰에서 HTTP로 붙으면
+카메라 권한 프롬프트조차 뜨지 않으니 반드시 HTTPS로 접속하세요.
 
 ## 빌드 / 배포
 
