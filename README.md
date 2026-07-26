@@ -80,11 +80,17 @@ npm run build
 이 저장소에는 `.github/workflows/deploy.yml`이 포함되어 있어
 **`main` 또는 `claude/**` 브랜치에 push되면 자동으로 GitHub Pages에 배포**됩니다.
 
-워크플로가 Pages를 자동으로 활성화(`enablement: true`)하기 때문에
-저장소 설정을 손볼 필요가 없습니다. push만 하면 됩니다.
+**최초 1회만 수동으로 Pages를 켜세요** (GitHub 정책상 워크플로의 기본
+토큰으로는 Pages 활성화가 안 됩니다):
 
-- Actions 탭에서 워크플로 성공을 확인하세요.
-- 배포 URL: `https://<GitHub유저이름>.github.io/-/`
+1. `https://github.com/D4nielforcode/-/settings/pages` 접속
+2. **Build and deployment → Source** 를 **GitHub Actions** 로 변경
+3. 실패했던 워크플로 재실행 (Actions 탭 → 최신 실패한 run → **Re-run failed jobs**)
+   또는 아무 커밋이나 push
+
+이후엔 `main` / `claude/**` 브랜치에 push할 때마다 자동 배포됩니다.
+
+- 배포 URL: `https://d4nielforcode.github.io/-/`
 
 이후엔 main에 merge할 때마다 자동 재배포됩니다.
 
