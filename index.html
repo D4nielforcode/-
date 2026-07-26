@@ -3,95 +3,132 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#000000" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <title>FILM CAM 27 · 일회용 필름카메라</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>M-27 · 필름카메라</title>
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
     <div id="app">
       <!-- 홈: 카메라 -->
       <section id="screen-camera" class="screen is-active" aria-label="카메라">
-        <div class="camera">
-          <div class="camera__top">
-            <div class="camera__brand">
-              <span class="camera__brand-name">FILM CAM</span>
-              <span class="camera__brand-model">MODEL 27</span>
+        <div class="cam">
+          <!-- 상단 금속 플레이트 -->
+          <div class="cam__top">
+            <div class="cam__hot-shoe" aria-hidden="true"></div>
+            <div class="cam__engrave">
+              <span class="cam__engrave-brand">LEICA</span>
+              <span class="cam__engrave-model">M-27</span>
             </div>
-            <div class="camera__counter" aria-label="남은 컷 수">
-              <span class="camera__counter-label">EXP.</span>
-              <span id="counter" class="camera__counter-num">27</span>
+            <div class="cam__leitz" aria-hidden="true">
+              <div class="cam__leitz-dot"></div>
             </div>
-          </div>
 
-          <div class="camera__face">
-            <div class="camera__lens" aria-hidden="true">
-              <div class="camera__lens-ring">
-                <div class="camera__lens-inner">
-                  <div class="camera__lens-glass"></div>
+            <!-- ISO 다이얼 -->
+            <div class="cam__dial cam__dial--iso" data-dial="iso" aria-label="ISO">
+              <div class="dial__body">
+                <div class="dial__marks"></div>
+                <div class="dial__rotor">
+                  <div class="dial__pointer"></div>
                 </div>
               </div>
-              <span class="camera__lens-label">30mm f/10</span>
+              <div class="dial__label">ISO</div>
+              <div class="dial__value" data-dial-value="iso">400</div>
             </div>
 
-            <div class="camera__viewfinder" aria-label="뷰파인더">
-              <div class="camera__viewfinder-hole">
-                <div class="camera__vf-frame">
-                  <span class="vf-bracket vf-bracket--tl"></span>
-                  <span class="vf-bracket vf-bracket--tr"></span>
-                  <span class="vf-bracket vf-bracket--bl"></span>
-                  <span class="vf-bracket vf-bracket--br"></span>
+            <!-- 셔터 스피드 다이얼 -->
+            <div class="cam__dial cam__dial--shutter" data-dial="shutter" aria-label="셔터 스피드">
+              <div class="dial__body">
+                <div class="dial__marks"></div>
+                <div class="dial__rotor">
+                  <div class="dial__pointer"></div>
                 </div>
               </div>
-              <span class="camera__viewfinder-label">VIEWFINDER</span>
+              <div class="dial__label">SHUTTER</div>
+              <div class="dial__value" data-dial-value="shutter">1/125</div>
             </div>
 
-            <div class="camera__flash" aria-hidden="true">
-              <div class="camera__flash-bulb"></div>
-              <span class="camera__flash-label">FLASH</span>
-            </div>
-          </div>
-
-          <div class="camera__bottom">
-            <button
-              id="shutter"
-              class="camera__shutter"
-              type="button"
-              aria-label="셔터"
-            >
-              <span class="camera__shutter-inner"></span>
+            <!-- 셔터 릴리즈 (작은 크롬 버튼) -->
+            <button id="shutter" class="cam__release" type="button" aria-label="셔터">
+              <span class="cam__release-thread"></span>
             </button>
-            <div class="camera__wind" aria-hidden="true">
-              <div class="camera__wind-wheel">
-                <div class="camera__wind-notch"></div>
-                <div class="camera__wind-notch"></div>
-                <div class="camera__wind-notch"></div>
-                <div class="camera__wind-notch"></div>
-              </div>
-              <span class="camera__wind-label">WIND</span>
+
+            <!-- 프레임 카운터 창 -->
+            <div class="cam__counter" aria-label="남은 컷 수">
+              <span class="cam__counter-label">EXP</span>
+              <span id="counter" class="cam__counter-num">27</span>
+            </div>
+
+            <!-- 뷰파인더 창(상단) -->
+            <div class="cam__vf-top" aria-hidden="true">
+              <div class="cam__vf-glass"></div>
             </div>
           </div>
 
-          <div class="camera__strap-hole camera__strap-hole--l"></div>
-          <div class="camera__strap-hole camera__strap-hole--r"></div>
+          <!-- 몸통 (가죽) -->
+          <div class="cam__body">
+            <!-- 왼쪽 레인지파인더 창 -->
+            <div class="cam__rf" aria-hidden="true">
+              <div class="cam__rf-glass"></div>
+            </div>
+
+            <!-- 셀프타이머 LED -->
+            <div class="cam__led" aria-hidden="true"></div>
+
+            <!-- 렌즈 -->
+            <div class="cam__lens" aria-label="렌즈">
+              <!-- 조리개 링 (드래그해서 조리개 변경) -->
+              <div class="lens__aperture" data-dial="aperture" aria-label="조리개">
+                <div class="lens__aperture-knurl"></div>
+                <div class="lens__aperture-mark">
+                  <span class="dial__value" data-dial-value="aperture">f/5.6</span>
+                </div>
+              </div>
+              <!-- 초점 링 -->
+              <div class="lens__focus" aria-hidden="true">
+                <div class="lens__focus-knurl"></div>
+              </div>
+              <!-- 렌즈 내부 -->
+              <div class="lens__inner">
+                <div class="lens__glass">
+                  <div class="lens__coating"></div>
+                  <div class="lens__reflection"></div>
+                </div>
+              </div>
+              <!-- 렌즈 각인 -->
+              <span class="lens__engrave-top">SUMMILUX 1.4/35</span>
+              <span class="lens__engrave-side">M-27</span>
+            </div>
+
+            <!-- 스트랩 러그 -->
+            <div class="cam__strap cam__strap--l" aria-hidden="true"></div>
+            <div class="cam__strap cam__strap--r" aria-hidden="true"></div>
+          </div>
         </div>
 
         <p id="status" class="status" role="status" aria-live="polite">
-          셔터를 눌러 촬영을 시작하세요
+          다이얼을 돌려 감도 · 셔터 · 조리개를 맞추고 촬영하세요
         </p>
 
         <div id="flash-overlay" class="flash-overlay" aria-hidden="true"></div>
+
+        <!-- 가로 안내 (세로일 때 표시) -->
+        <div id="rotate-hint" class="rotate-hint" hidden>
+          <div class="rotate-hint__icon">⟳</div>
+          <p>가로로 돌려주세요</p>
+        </div>
       </section>
 
       <!-- 현상소 -->
       <section id="screen-lab" class="screen" aria-label="현상소" hidden>
         <div class="lab">
-          <h1 class="lab__title">DEVELOPING…</h1>
-          <p class="lab__sub">암실에서 필름을 현상 중입니다</p>
+          <h1 class="lab__title">DEVELOPING</h1>
+          <p class="lab__sub">암실에서 필름을 현상 중입니다 · 화면을 문질러 저어보세요</p>
           <div class="lab__filmstrip" id="filmstrip"></div>
-          <button id="to-gallery" class="btn btn--yellow" type="button" hidden>
+          <canvas class="lab__safelight" id="safelight" aria-hidden="true"></canvas>
+          <button id="to-gallery" class="btn btn--primary" type="button" hidden>
             갤러리 열기 →
           </button>
         </div>
@@ -100,13 +137,35 @@
       <!-- 갤러리 -->
       <section id="screen-gallery" class="screen" aria-label="갤러리" hidden>
         <header class="gallery__header">
-          <h1 class="gallery__title">MY ROLL</h1>
+          <h1 class="gallery__title">CONTACT SHEET</h1>
           <button id="new-roll" class="btn btn--ghost" type="button">
-            새 필름 넣기
+            새 필름
           </button>
         </header>
         <div class="gallery__grid" id="gallery-grid"></div>
       </section>
+
+      <!-- 사진 디테일 (인터랙티브 아트) -->
+      <div id="detail" class="detail" hidden>
+        <button id="detail-close" class="detail__close" type="button" aria-label="닫기">×</button>
+        <div class="detail__stage">
+          <img id="detail-img" class="detail__img" alt="" />
+          <canvas id="art-canvas" class="detail__art"></canvas>
+        </div>
+        <div class="detail__toolbar">
+          <div class="detail__modes" role="tablist">
+            <button class="mode" data-mode="off" role="tab" aria-selected="true">OFF</button>
+            <button class="mode" data-mode="bokeh" role="tab">BOKEH</button>
+            <button class="mode" data-mode="rays" role="tab">RAYS</button>
+            <button class="mode" data-mode="aurora" role="tab">AURORA</button>
+            <button class="mode" data-mode="fireflies" role="tab">FIRE</button>
+          </div>
+          <div class="detail__actions">
+            <a id="detail-dl" class="mode mode--action" download="">SAVE</a>
+          </div>
+        </div>
+        <p class="detail__hint">화면을 만지고 움직여보세요</p>
+      </div>
 
       <!-- 권한/에러 -->
       <div id="permission" class="modal" hidden>
@@ -115,7 +174,7 @@
           <p class="modal__msg" id="permission-msg">
             촬영을 위해 카메라 사용을 허용해주세요.
           </p>
-          <button id="retry" class="btn btn--yellow" type="button">다시 시도</button>
+          <button id="retry" class="btn btn--primary" type="button">다시 시도</button>
         </div>
       </div>
     </div>

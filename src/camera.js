@@ -65,8 +65,8 @@ export function captureFrame() {
     throw new CameraError('notready', '카메라가 준비되지 않았습니다.');
   }
 
-  // 필름 프레임에 맞게 4:3으로 crop
-  const targetAspect = 4 / 3;
+  // 35mm 필름 프레임 = 3:2
+  const targetAspect = 3 / 2;
   const vw = videoEl.videoWidth;
   const vh = videoEl.videoHeight;
   const videoAspect = vw / vh;
@@ -86,8 +86,8 @@ export function captureFrame() {
     sy = Math.round((vh - sh) / 2);
   }
 
-  // 최종 출력은 1600x1200으로 정규화
-  const outW = 1600;
+  // 최종 출력 1800x1200 (3:2)
+  const outW = 1800;
   const outH = 1200;
   const canvas = document.createElement('canvas');
   canvas.width = outW;

@@ -1,36 +1,45 @@
-/* ------- reset ------- */
+/* ============================================================
+   Leica M-27 · disposable simulator
+   가로 orientation, 올블랙 페인트 M6 스킨
+   ============================================================ */
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; height: 100%; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 img { display: block; max-width: 100%; }
 
 :root {
-  --yellow: #ffcc00;
-  --yellow-deep: #e6b800;
-  --yellow-shadow: #a88300;
-  --black: #111111;
-  --plastic: #1a1a1a;
-  --red: #d13a2a;
-  --red-deep: #9c261a;
-  --cream: #f5efe0;
-  --dark-red: #3a0a08;
-  --mono: "Courier New", "SFMono-Regular", ui-monospace, Menlo, monospace;
+  --leather: #0a0a0a;
+  --leather-hi: #1a1a1a;
+  --plate: #0d0d0d;
+  --plate-hi: #1c1c1c;
+  --plate-shadow: #030303;
+  --chrome: #b8b8bc;
+  --chrome-hi: #e8e8ea;
+  --chrome-lo: #4a4a4e;
+  --leitz-red: #c8102e;
+  --led-red: #ff2d1e;
+  --paper: #eae4d0;
+  --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans KR", sans-serif;
+  --mono: "SFMono-Regular", ui-monospace, "Courier New", Menlo, monospace;
+  --serif: "Times New Roman", "Noto Serif KR", serif;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans KR", sans-serif;
+  font-family: var(--sans);
   background:
-    radial-gradient(ellipse at 50% 20%, #2a2a2a 0%, #0a0a0a 70%);
-  color: #fff;
+    radial-gradient(ellipse at 50% 30%, #1a1a1a 0%, #050505 60%, #000 100%);
+  color: #eee;
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow: hidden;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
-/* video는 화면에 절대 노출되지 않음 */
+/* video 절대 노출 안 됨 */
 #hidden-video {
   position: fixed;
   top: -9999px;
@@ -41,349 +50,586 @@ body {
   pointer-events: none;
 }
 
-/* ------- 화면 전환 ------- */
+/* 화면 전환 */
 .screen {
-  min-height: 100dvh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  position: fixed;
+  inset: 0;
   display: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
-.screen.is-active { display: block; }
+.screen.is-active { display: flex; }
 [hidden] { display: none !important; }
 
-/* ================================================
-   카메라 화면
-   ================================================ */
+/* ============================================================
+   1. CAMERA (라이카 M6 블랙 페인트, 가로)
+   ============================================================ */
+
 #screen-camera.is-active {
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  gap: 18px;
+  padding: 16px;
 }
 
-.camera {
+.cam {
   position: relative;
-  width: min(360px, 92vw);
-  aspect-ratio: 5 / 7;
-  background:
-    /* 플라스틱 스캐터 노이즈 */
-    radial-gradient(circle at 10% 10%, rgba(255,255,255,0.06) 0 1px, transparent 2px),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05) 0 1px, transparent 2px),
-    radial-gradient(circle at 40% 80%, rgba(0,0,0,0.15) 0 1px, transparent 2px),
-    linear-gradient(180deg, #ffd91a 0%, var(--yellow) 40%, var(--yellow-deep) 100%);
-  border: 3px solid var(--black);
-  border-radius: 18px;
+  width: min(720px, 96vw);
+  aspect-ratio: 5 / 3;
+  background: var(--leather);
+  border-radius: 10px;
   box-shadow:
-    inset 0 4px 0 rgba(255,255,255,0.35),
-    inset 0 -6px 0 var(--yellow-shadow),
-    0 20px 40px rgba(0,0,0,0.5),
-    0 0 0 3px #000;
-  padding: 18px 16px;
+    inset 0 0 0 1px #000,
+    inset 0 2px 0 rgba(255,255,255,0.04),
+    0 30px 60px -20px rgba(0,0,0,0.9),
+    0 10px 30px rgba(0,0,0,0.7);
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 12px;
+  grid-template-rows: 28% 1fr;
   overflow: hidden;
 }
 
-.camera::before {
+/* --- Top plate (금속) --- */
+.cam__top {
+  position: relative;
+  background:
+    /* 미세한 sanding 자국 */
+    repeating-linear-gradient(90deg, transparent 0 2px, rgba(255,255,255,0.02) 2px 3px),
+    linear-gradient(180deg, var(--plate-hi) 0%, var(--plate) 55%, var(--plate-shadow) 100%);
+  border-bottom: 1px solid #000;
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* 상판 아래로 살짝 그림자 */
+.cam__top::after {
   content: "";
   position: absolute;
-  inset: 8px;
-  border: 1.5px dashed rgba(0,0,0,0.15);
-  border-radius: 12px;
+  left: 0; right: 0; bottom: -6px;
+  height: 6px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.7), transparent);
   pointer-events: none;
 }
 
-/* 상단: 브랜드 + 카운터 */
-.camera__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 2;
+.cam__hot-shoe {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 14px;
+  background: linear-gradient(180deg, #2a2a2a, #0a0a0a);
+  border: 1px solid #000;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 -2px 3px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.camera__brand {
+.cam__hot-shoe::before,
+.cam__hot-shoe::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  background: #050505;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.9);
+}
+.cam__hot-shoe::before { left: 3px; }
+.cam__hot-shoe::after  { right: 3px; }
+
+.cam__engrave {
+  position: absolute;
+  top: 45%;
+  left: 12%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  color: var(--black);
-  line-height: 1;
+  align-items: flex-start;
+  line-height: 1.05;
 }
-.camera__brand-name {
-  font-family: var(--mono);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-.camera__brand-model {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin-top: 4px;
-  color: rgba(0,0,0,0.7);
-}
-
-.camera__counter {
-  background: var(--black);
-  border-radius: 6px;
-  padding: 6px 10px 5px;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.15);
-  border: 1px solid #000;
-}
-.camera__counter-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 1px;
-}
-.camera__counter-num {
-  font-family: var(--mono);
+.cam__engrave-brand {
+  font-family: var(--serif);
+  font-style: italic;
   font-weight: 700;
   font-size: 22px;
-  color: #ff3020;
-  text-shadow: 0 0 6px rgba(255,48,32,0.6);
-  min-width: 2ch;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.72);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 -1px 0 rgba(255,255,255,0.05);
+}
+.cam__engrave-model {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9);
 }
 
-/* 얼굴: 렌즈 + 뷰파인더 + 플래시 */
-.camera__face {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  place-items: center;
-  z-index: 1;
+.cam__leitz {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff3548 0%, var(--leitz-red) 50%, #7a0918 100%);
+  box-shadow:
+    inset 0 -2px 3px rgba(0,0,0,0.5),
+    inset 0 2px 2px rgba(255,255,255,0.2),
+    0 0 0 1px #000;
+}
+.cam__leitz-dot {
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 24%;
+  height: 24%;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  filter: blur(1px);
 }
 
-.camera__lens {
-  position: relative;
+/* --- Dials (ISO, Shutter) --- */
+.cam__dial {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  touch-action: none;
 }
-.camera__lens-ring {
-  width: min(160px, 42vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #2a2a2a, #000 70%);
-  border: 4px solid #000;
-  box-shadow:
-    0 0 0 6px #d8b400,
-    0 0 0 8px #000,
-    inset 0 4px 12px rgba(255,255,255,0.15),
-    inset 0 -4px 10px rgba(0,0,0,0.7);
-  display: grid;
-  place-items: center;
-}
-.camera__lens-inner {
-  width: 68%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #444 0%, #050505 60%, #000 100%);
-  border: 2px solid #000;
-  display: grid;
-  place-items: center;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
-}
-.camera__lens-glass {
-  width: 55%;
-  aspect-ratio: 1;
+.cam__dial--iso     { left: 40%; }
+.cam__dial--shutter { right: 24%; }
+
+.dial__body {
+  position: relative;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.4), transparent 40%),
-    radial-gradient(circle at 70% 75%, rgba(70, 130, 180, 0.4), transparent 50%),
-    radial-gradient(circle at 50% 50%, #0a1a2a, #000 70%);
-  box-shadow: inset 0 0 12px rgba(0,0,0,1);
-}
-.camera__lens-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  color: rgba(0,0,0,0.7);
-}
-
-.camera__viewfinder {
-  position: absolute;
-  top: 0;
-  right: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-.camera__viewfinder-hole {
-  width: 46px;
-  height: 32px;
-  background: linear-gradient(180deg, #0a0a0a, #1a1a1a);
+    conic-gradient(from 0deg,
+      #303034 0deg 8deg, #101014 8deg 16deg,
+      #303034 16deg 24deg, #101014 24deg 32deg,
+      #303034 32deg 40deg, #101014 40deg 48deg,
+      #303034 48deg 56deg, #101014 56deg 64deg,
+      #303034 64deg 72deg, #101014 72deg 80deg,
+      #303034 80deg 88deg, #101014 88deg 96deg,
+      #303034 96deg 104deg, #101014 104deg 112deg,
+      #303034 112deg 120deg, #101014 120deg 128deg,
+      #303034 128deg 136deg, #101014 136deg 144deg,
+      #303034 144deg 152deg, #101014 152deg 160deg,
+      #303034 160deg 168deg, #101014 168deg 176deg,
+      #303034 176deg 184deg, #101014 184deg 192deg,
+      #303034 192deg 200deg, #101014 200deg 208deg,
+      #303034 208deg 216deg, #101014 216deg 224deg,
+      #303034 224deg 232deg, #101014 232deg 240deg,
+      #303034 240deg 248deg, #101014 248deg 256deg,
+      #303034 256deg 264deg, #101014 264deg 272deg,
+      #303034 272deg 280deg, #101014 280deg 288deg,
+      #303034 288deg 296deg, #101014 296deg 304deg,
+      #303034 304deg 312deg, #101014 312deg 320deg,
+      #303034 320deg 328deg, #101014 328deg 336deg,
+      #303034 336deg 344deg, #101014 344deg 352deg,
+      #303034 352deg 360deg);
   border: 2px solid #000;
-  border-radius: 3px;
-  position: relative;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
-  overflow: hidden;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,0.15),
+    inset 0 -3px 4px rgba(0,0,0,0.7),
+    0 2px 4px rgba(0,0,0,0.6);
+  display: grid;
+  place-items: center;
 }
-.camera__vf-frame {
+.dial__marks {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #1a1a1a 0%, #0a0a0a 60%, transparent 62%);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.dial__rotor {
   position: absolute;
   inset: 6px;
-}
-.vf-bracket {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border: 1.5px solid rgba(255,255,255,0.35);
-}
-.vf-bracket--tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-.vf-bracket--tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
-.vf-bracket--bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
-.vf-bracket--br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-.camera__viewfinder-label {
-  font-family: var(--mono);
-  font-size: 7px;
-  color: rgba(0,0,0,0.6);
-  letter-spacing: 1px;
-}
-
-.camera__flash {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-.camera__flash-bulb {
-  width: 26px;
-  height: 26px;
-  background: radial-gradient(circle at 35% 30%, #fff 0%, #f0f0e0 40%, #a8a89a 100%);
-  border: 2px solid #000;
-  border-radius: 6px;
-  box-shadow: inset 0 -3px 4px rgba(0,0,0,0.35);
-}
-.camera__flash-label {
-  font-family: var(--mono);
-  font-size: 7px;
-  color: rgba(0,0,0,0.6);
-  letter-spacing: 1px;
-}
-
-/* 하단: 셔터 + 와인더 */
-.camera__bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 4px;
-  z-index: 2;
-}
-
-.camera__shutter {
-  width: 72px;
-  height: 72px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ff5a3a, var(--red) 60%, var(--red-deep));
-  border: 3px solid #000;
+  transform: rotate(0deg);
+  transition: transform 100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.dial__pointer {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  background: #f0f0f0;
+  transform: translateX(-50%);
+  box-shadow: 0 0 3px rgba(255,255,255,0.6);
+  border-radius: 1px;
+}
+.dial__label {
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.45);
+}
+.dial__value {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* --- Shutter release button --- */
+.cam__release {
+  position: absolute;
+  top: 30%;
+  right: 15%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--chrome-hi), var(--chrome) 60%, var(--chrome-lo));
+  border: 1.5px solid #000;
   box-shadow:
-    inset 0 3px 0 rgba(255,255,255,0.4),
-    inset 0 -6px 0 rgba(0,0,0,0.4),
-    0 6px 0 var(--red-deep),
-    0 8px 16px rgba(0,0,0,0.5);
+    inset 0 -3px 4px rgba(0,0,0,0.35),
+    inset 0 2px 2px rgba(255,255,255,0.35),
+    0 2px 4px rgba(0,0,0,0.7);
   display: grid;
   place-items: center;
   transition: transform 60ms ease, box-shadow 60ms ease;
-  touch-action: manipulation;
 }
-.camera__shutter:active,
-.camera__shutter.is-pressed {
-  transform: translateY(4px);
-  box-shadow:
-    inset 0 3px 0 rgba(255,255,255,0.3),
-    inset 0 -3px 0 rgba(0,0,0,0.4),
-    0 2px 0 var(--red-deep),
-    0 3px 6px rgba(0,0,0,0.5);
+.cam__release::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
 }
-.camera__shutter:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.camera__shutter-inner {
+.cam__release-thread {
   width: 40%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent 60%);
-  border: 1.5px solid rgba(0,0,0,0.4);
+  border: 1px solid var(--chrome-lo);
+  background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.3), transparent 60%);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.4);
 }
+.cam__release:active,
+.cam__release.is-pressed {
+  transform: translateY(1px) scale(0.96);
+  box-shadow:
+    inset 0 2px 3px rgba(0,0,0,0.5),
+    inset 0 -1px 1px rgba(255,255,255,0.1),
+    0 1px 2px rgba(0,0,0,0.6);
+}
+.cam__release:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.camera__wind {
+/* --- Frame counter window --- */
+.cam__counter {
+  position: absolute;
+  top: 55%;
+  right: 8%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  padding: 4px 6px;
+  background: radial-gradient(ellipse at 50% 40%, #2a2010 0%, #0a0a05 80%);
+  border: 1px solid #000;
+  border-radius: 2px;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
 }
-.camera__wind-wheel {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+.cam__counter-label {
+  font-family: var(--mono);
+  font-size: 6px;
+  letter-spacing: 1px;
+  color: rgba(255,200,100,0.55);
+}
+.cam__counter-num {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffb454;
+  text-shadow: 0 0 4px rgba(255,150,50,0.6);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: center;
+}
+
+/* --- 뷰파인더 (상판 오른쪽 유리) --- */
+.cam__vf-top {
+  position: absolute;
+  top: 20%;
+  right: 3%;
+  width: 46px;
+  height: 30px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #4a5a70 0%, #1a2030 50%, #0a1020 100%);
+  border: 1.5px solid #000;
+  box-shadow:
+    inset 0 0 6px rgba(0,0,0,0.9),
+    inset 2px 2px 4px rgba(255,255,255,0.1),
+    0 1px 2px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.cam__vf-glass {
+  position: absolute;
+  inset: 3px;
+  border-radius: 2px;
   background:
-    conic-gradient(from 0deg, #222 0deg 20deg, #333 20deg 40deg, #222 40deg 60deg, #333 60deg 80deg, #222 80deg 100deg, #333 100deg 120deg, #222 120deg 140deg, #333 140deg 160deg, #222 160deg 180deg, #333 180deg 200deg, #222 200deg 220deg, #333 220deg 240deg, #222 240deg 260deg, #333 260deg 280deg, #222 280deg 300deg, #333 300deg 320deg, #222 320deg 340deg, #333 340deg 360deg);
-  border: 3px solid #000;
-  box-shadow: inset 0 2px 6px rgba(255,255,255,0.15), inset 0 -2px 6px rgba(0,0,0,0.7);
+    linear-gradient(120deg, rgba(255,255,255,0.15) 0%, transparent 30%),
+    radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.05), transparent 50%);
+}
+
+/* --- Body (leatherette) --- */
+.cam__body {
   position: relative;
-  transition: transform 400ms ease;
+  background:
+    /* 가죽 무늬: 미세한 도트 */
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02) 0 0.5px, transparent 1px),
+    radial-gradient(circle at 70% 40%, rgba(255,255,255,0.015) 0 0.5px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(0,0,0,0.15) 0 0.5px, transparent 1px),
+    radial-gradient(circle at 85% 75%, rgba(255,255,255,0.02) 0 0.5px, transparent 1px),
+    /* 배경 */
+    linear-gradient(180deg, #0e0e0e 0%, #060606 100%);
+  background-size: 6px 6px, 8px 8px, 5px 5px, 7px 7px, 100% 100%;
 }
-.camera__wind-wheel.is-winding {
-  animation: wind-spin 800ms ease-out;
+
+/* 좌측 레인지파인더 창 (전면) */
+.cam__rf {
+  position: absolute;
+  top: 12%;
+  left: 6%;
+  width: 44px;
+  height: 32px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #6070a0 0%, #1a2030 60%, #0a1020 100%);
+  border: 1.5px solid #000;
+  box-shadow:
+    inset 0 0 6px rgba(0,0,0,0.9),
+    inset 2px 2px 4px rgba(255,255,255,0.12),
+    0 1px 2px rgba(0,0,0,0.6);
 }
-@keyframes wind-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(220deg); }
+.cam__rf-glass {
+  position: absolute;
+  inset: 3px;
+  border-radius: 2px;
+  background:
+    linear-gradient(140deg, rgba(255,255,255,0.2) 0%, transparent 40%);
 }
-.camera__wind-notch {
+
+/* 셀프타이머 LED (렌즈 왼쪽 아래) */
+.cam__led {
+  position: absolute;
+  bottom: 18%;
+  left: 12%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff5c50, var(--led-red) 60%, #6a0910);
+  box-shadow:
+    0 0 0 1.5px #000,
+    0 0 6px rgba(255,50,30,0.4),
+    inset 0 -1px 2px rgba(0,0,0,0.4);
+}
+
+/* --- Lens --- */
+.cam__lens {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 3px;
-  height: 8px;
-  background: #000;
-  transform-origin: center 22px;
-}
-.camera__wind-notch:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg); }
-.camera__wind-notch:nth-child(2) { transform: translate(-50%, -50%) rotate(90deg); }
-.camera__wind-notch:nth-child(3) { transform: translate(-50%, -50%) rotate(180deg); }
-.camera__wind-notch:nth-child(4) { transform: translate(-50%, -50%) rotate(270deg); }
-.camera__wind-label {
-  font-family: var(--mono);
-  font-size: 7px;
-  color: rgba(0,0,0,0.6);
-  letter-spacing: 1px;
+  transform: translate(-50%, -50%);
+  width: min(280px, 42%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 3px solid #000;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.8),
+    0 0 0 4px #050505,
+    inset 0 3px 4px rgba(255,255,255,0.08),
+    inset 0 -3px 6px rgba(0,0,0,0.8);
+  display: grid;
+  place-items: center;
 }
 
-/* 스트랩 구멍 */
-.camera__strap-hole {
+/* 조리개 링 (바깥) */
+.lens__aperture {
   position: absolute;
-  top: -3px;
-  width: 20px;
-  height: 8px;
-  background: #000;
-  border-radius: 0 0 8px 8px;
+  inset: -2%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(#1a1a1a 0deg 3deg, #050505 3deg 6deg);
+  border: 2px solid #000;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,0.08),
+    inset 0 -2px 4px rgba(0,0,0,0.7),
+    0 4px 10px rgba(0,0,0,0.6);
+  touch-action: none;
+  cursor: grab;
 }
-.camera__strap-hole--l { left: 24px; }
-.camera__strap-hole--r { right: 24px; }
+.lens__aperture:active { cursor: grabbing; }
+.lens__aperture-knurl {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 3deg, transparent 3deg 6deg);
+  pointer-events: none;
+}
+.lens__aperture-mark {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+.lens__aperture-mark::after {
+  content: "";
+  width: 1.5px;
+  height: 6px;
+  background: #ff2d1e;
+  box-shadow: 0 0 3px rgba(255,50,30,0.6);
+  margin-top: 2px;
+}
+.lens__aperture-mark .dial__value {
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+}
 
-/* 상태 텍스트 */
-.status {
-  margin-top: 20px;
+/* 초점 링 (안쪽) */
+.lens__focus {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(#141416 0deg 4deg, #050505 4deg 8deg);
+  border: 1.5px solid #000;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
+}
+.lens__focus-knurl {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.05) 0deg 4deg, transparent 4deg 8deg);
+}
+
+/* 렌즈 내부 (유리) */
+.lens__inner {
+  position: absolute;
+  inset: 26%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%, #1a1a1a 0%, #050505 40%, #000 100%);
+  border: 2px solid #000;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    inset 0 4px 8px rgba(0,0,0,0.9),
+    inset 0 -2px 4px rgba(20,30,50,0.3);
+}
+.lens__glass {
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(180, 200, 220, 0.5) 0%, transparent 25%),
+    radial-gradient(circle at 65% 60%, rgba(60, 100, 160, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, #0a1526 0%, #000 70%);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.95);
+  position: relative;
+  overflow: hidden;
+}
+.lens__coating {
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 65% 35%, rgba(100, 200, 180, 0.3), transparent 40%),
+    radial-gradient(circle at 30% 70%, rgba(180, 80, 120, 0.2), transparent 40%);
+}
+.lens__reflection {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 25%;
+  height: 30%;
+  background: radial-gradient(ellipse at 40% 40%, rgba(255,255,255,0.6), transparent 60%);
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.lens__engrave-top {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--mono);
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
+  font-size: 8px;
   letter-spacing: 1px;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.lens__engrave-side {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  pointer-events: none;
+}
+
+/* 스트랩 러그 */
+.cam__strap {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 22px;
+  background: linear-gradient(180deg, #2a2a2a, #050505);
+  border: 1px solid #000;
+  border-radius: 3px;
+  box-shadow: inset 0 -3px 4px rgba(0,0,0,0.7);
+}
+.cam__strap::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  border-radius: 50%;
+}
+.cam__strap--l { left: -4px; }
+.cam__strap--r { right: -4px; }
+
+/* --- 상태 텍스트 --- */
+.status {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1.5px;
   text-align: center;
+  margin: 0;
   min-height: 1.5em;
 }
-.status.is-error { color: #ff5a4a; }
+.status.is-error { color: #ff5c50; }
 
-/* 셔터 플래시 오버레이 */
+/* 셔터 플래시 */
 .flash-overlay {
   position: fixed;
   inset: 0;
@@ -392,96 +638,122 @@ body {
   pointer-events: none;
   z-index: 999;
 }
-.flash-overlay.is-flash {
-  animation: flashAnim 220ms ease-out;
-}
+.flash-overlay.is-flash { animation: flashAnim 220ms ease-out; }
 @keyframes flashAnim {
-  0%   { opacity: 0; }
-  20%  { opacity: 1; }
+  0% { opacity: 0; }
+  15% { opacity: 1; }
   100% { opacity: 0; }
 }
 
-/* ================================================
-   현상소
-   ================================================ */
+/* --- 가로 안내 (portrait일 때) --- */
+.rotate-hint {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.94);
+  display: grid;
+  place-items: center;
+  z-index: 500;
+  color: rgba(255,255,255,0.6);
+}
+.rotate-hint__icon {
+  font-size: 60px;
+  animation: rotateSpin 2s ease-in-out infinite;
+}
+.rotate-hint p {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-top: 10px;
+}
+@keyframes rotateSpin {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
+/* ============================================================
+   2. DEVELOPING LAB
+   ============================================================ */
+
 #screen-lab.is-active {
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 40px 16px calc(40px + env(safe-area-inset-bottom));
+  padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
   background:
-    radial-gradient(ellipse at 50% 30%, rgba(180, 40, 30, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.9) 0%, transparent 70%),
-    var(--dark-red);
-  min-height: 100dvh;
+    radial-gradient(ellipse at 50% 20%, rgba(180, 40, 30, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.95) 0%, transparent 65%),
+    #1a0806;
+  overflow-y: auto;
 }
 .lab {
   width: 100%;
-  max-width: 720px;
+  max-width: 1000px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 .lab__title {
   font-family: var(--mono);
-  font-size: 24px;
-  letter-spacing: 6px;
-  margin: 0 0 8px;
-  color: #ff9a80;
-  text-shadow: 0 0 12px rgba(255, 100, 80, 0.6);
+  font-size: 20px;
+  letter-spacing: 8px;
+  margin: 0 0 4px;
+  color: #ffb4a4;
+  text-shadow: 0 0 12px rgba(255, 100, 80, 0.7);
 }
 .lab__title::after {
-  content: "…";
-  animation: dots 1.4s steps(4, end) infinite;
+  content: "";
   display: inline-block;
-  width: 1.2em;
+  width: 1.5em;
   text-align: left;
+  animation: dots 1.4s steps(4, end) infinite;
 }
-.lab__title.is-done::after { content: ""; }
+.lab__title.is-done::after { content: ""; animation: none; }
 @keyframes dots {
-  0%   { content: ""; }
-  25%  { content: "."; }
-  50%  { content: ".."; }
-  75%  { content: "..."; }
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
 }
 .lab__sub {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 2px;
-  color: rgba(255, 200, 190, 0.6);
-  margin: 0 0 28px;
+  color: rgba(255, 200, 190, 0.5);
+  margin: 0 0 24px;
 }
-
+.lab__safelight {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
 .lab__filmstrip {
-  background: #0a0a0a;
-  border: 2px solid #000;
-  border-radius: 4px;
-  padding: 18px 12px;
+  background: #060606;
+  border: 1px solid #000;
+  padding: 20px 14px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 14px 10px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px 12px;
   position: relative;
   min-height: 200px;
   box-shadow:
-    inset 0 0 40px rgba(0,0,0,0.9),
-    0 8px 24px rgba(0,0,0,0.6);
+    inset 0 0 50px rgba(0,0,0,0.95),
+    0 12px 40px rgba(0,0,0,0.7);
 }
 .lab__filmstrip::before,
 .lab__filmstrip::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background-image: linear-gradient(90deg, transparent 0, transparent 6px, #0a0a0a 6px, #0a0a0a 14px);
-  background-size: 14px 8px;
-  background-repeat: repeat-x;
-  background-color: #2a1a10;
+  left: 0; right: 0;
+  height: 10px;
+  background-image: linear-gradient(90deg, transparent 0, transparent 8px, #060606 8px, #060606 16px);
+  background-size: 16px 10px;
+  background-color: #2a1610;
 }
-.lab__filmstrip::before { top: 4px; }
-.lab__filmstrip::after { bottom: 4px; }
-
+.lab__filmstrip::before { top: 3px; }
+.lab__filmstrip::after { bottom: 3px; }
 .film-frame {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   background: #050505;
   border: 1px solid #2a1a10;
   position: relative;
@@ -489,16 +761,14 @@ body {
   opacity: 0;
   transform: translateY(8px) scale(0.98);
 }
-.film-frame.is-visible {
-  animation: framePop 700ms ease-out forwards;
-}
+.film-frame.is-visible { animation: framePop 700ms ease-out forwards; }
 .film-frame__index {
   position: absolute;
-  top: 2px;
-  right: 4px;
+  top: 3px;
+  right: 5px;
   font-family: var(--mono);
   font-size: 9px;
-  color: rgba(255, 200, 100, 0.5);
+  color: rgba(255, 200, 100, 0.6);
   z-index: 2;
   text-shadow: 0 0 4px rgba(0,0,0,0.9);
 }
@@ -507,57 +777,68 @@ body {
   height: 100%;
   object-fit: cover;
   filter: sepia(0.4) brightness(0.4);
-  animation: develop 1200ms ease-out forwards;
+  animation: develop 1400ms ease-out forwards;
 }
 @keyframes framePop {
   from { opacity: 0; transform: translateY(10px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes develop {
-  0%   { filter: sepia(1) brightness(0.15) contrast(1.4); }
-  40%  { filter: sepia(0.7) brightness(0.5) contrast(1.2); }
+  0%   { filter: sepia(1) brightness(0.15) contrast(1.5); }
+  35%  { filter: sepia(0.75) brightness(0.45) contrast(1.25); }
   100% { filter: none; }
 }
 
-/* ================================================
-   갤러리
-   ================================================ */
+/* ============================================================
+   3. GALLERY
+   ============================================================ */
+
 #screen-gallery.is-active {
-  display: block;
+  flex-direction: column;
   padding: calc(20px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom));
-  background: #0e0e0e;
-  min-height: 100dvh;
+  background:
+    linear-gradient(180deg, #0e0e0e 0%, #050505 100%);
+  overflow-y: auto;
 }
 .gallery__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
   gap: 12px;
 }
 .gallery__title {
   font-family: var(--mono);
-  font-size: 22px;
+  font-size: 16px;
   letter-spacing: 4px;
   margin: 0;
-  color: var(--yellow);
+  color: rgba(255,255,255,0.75);
 }
 .gallery__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 .photo {
-  background: #1a1a1a;
-  border-radius: 4px;
+  background: #0a0a0a;
+  border: 1px solid #222;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid #333;
+  transition: transform 120ms ease, border-color 120ms ease;
+  cursor: pointer;
 }
+.photo:hover { transform: translateY(-2px); border-color: #444; }
 .photo__img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   background: #000;
 }
@@ -565,79 +846,173 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 8px;
+  padding: 6px 10px;
   font-family: var(--mono);
   font-size: 10px;
   color: rgba(255,255,255,0.55);
 }
-.photo__num { letter-spacing: 1px; }
-.photo__dl {
-  background: var(--yellow);
-  color: #000;
-  padding: 3px 8px;
-  border-radius: 3px;
+
+/* ============================================================
+   4. DETAIL VIEW (인터랙티브 아트)
+   ============================================================ */
+
+.detail {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  z-index: 800;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.detail__close {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 12px);
+  right: calc(env(safe-area-inset-right) + 14px);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.5);
+  font-size: 26px;
+  line-height: 1;
+  z-index: 3;
+}
+.detail__stage {
+  flex: 1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-height: 0;
+}
+.detail__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+.detail__art {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: auto;
+  touch-action: none;
+}
+.detail__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px calc(6px + env(safe-area-inset-bottom));
+  gap: 8px;
+  flex-wrap: wrap;
+  z-index: 3;
+}
+.detail__modes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.mode {
+  padding: 8px 12px;
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 1px;
-  font-weight: 700;
-  text-decoration: none;
-}
-.photo__dl:active { transform: translateY(1px); }
-
-/* ================================================
-   버튼 & 모달
-   ================================================ */
-.btn {
-  padding: 10px 18px;
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 12px;
   letter-spacing: 2px;
   font-weight: 700;
-  border: 2px solid #000;
+  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 2px;
+  text-decoration: none;
+}
+.mode[aria-selected="true"] {
+  color: #000;
+  background: #f5efe0;
+  border-color: #f5efe0;
+}
+.mode--action {
+  background: #ff9a20;
+  color: #000;
+  border-color: #ff9a20;
+}
+.detail__hint {
+  position: absolute;
+  bottom: calc(70px + env(safe-area-inset-bottom));
+  left: 0; right: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+  z-index: 3;
+  margin: 0;
+}
+
+/* ============================================================
+   5. BUTTONS & MODAL
+   ============================================================ */
+
+.btn {
+  padding: 10px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2px;
+  color: rgba(255,255,255,0.85);
   transition: transform 80ms;
 }
 .btn:active { transform: translateY(1px); }
-.btn--yellow {
-  background: var(--yellow);
+.btn--primary {
+  background: #f5efe0;
   color: #000;
-  box-shadow: 0 3px 0 var(--yellow-shadow);
+  border-color: #f5efe0;
   margin-top: 24px;
 }
 .btn--ghost {
   background: transparent;
-  color: rgba(255,255,255,0.75);
-  border: 1px solid rgba(255,255,255,0.25);
   padding: 6px 12px;
   font-size: 10px;
 }
-
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
   display: grid;
   place-items: center;
   z-index: 1000;
   padding: 20px;
 }
 .modal__card {
-  background: #1a1a1a;
-  border: 2px solid var(--yellow);
+  background: #0a0a0a;
+  border: 1px solid #333;
   padding: 24px 20px;
   max-width: 340px;
   text-align: center;
 }
 .modal__title {
   font-family: var(--mono);
-  font-size: 14px;
-  color: var(--yellow);
+  font-size: 13px;
+  color: #f5efe0;
   letter-spacing: 2px;
   margin: 0 0 12px;
 }
 .modal__msg {
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.7);
   margin: 0 0 20px;
+}
+
+/* ============================================================
+   6. RESPONSIVE / PORTRAIT HINT
+   ============================================================ */
+
+/* portrait이면서 좁을 때: 회전 유도 */
+@media (orientation: portrait) and (max-width: 700px) {
+  #screen-camera.is-active .rotate-hint {
+    display: grid !important;
+  }
 }
