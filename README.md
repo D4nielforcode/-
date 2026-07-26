@@ -80,12 +80,11 @@ npm run build
 이 저장소에는 `.github/workflows/deploy.yml`이 포함되어 있어
 **`main` 또는 `claude/**` 브랜치에 push되면 자동으로 GitHub Pages에 배포**됩니다.
 
-**최초 1회만 해줄 것:**
+워크플로가 Pages를 자동으로 활성화(`enablement: true`)하기 때문에
+저장소 설정을 손볼 필요가 없습니다. push만 하면 됩니다.
 
-1. GitHub 저장소 → **Settings** → **Pages**
-2. **Source**를 **GitHub Actions**로 변경 → Save
-3. Actions 탭에서 워크플로 성공 확인
-4. 배포 URL: `https://<GitHub유저이름>.github.io/-/`
+- Actions 탭에서 워크플로 성공을 확인하세요.
+- 배포 URL: `https://<GitHub유저이름>.github.io/-/`
 
 이후엔 main에 merge할 때마다 자동 재배포됩니다.
 
