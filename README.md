@@ -75,6 +75,23 @@ npm run build
 
 정적 파일이 `dist/`에 생성됩니다. 아무 정적 호스팅(HTTPS 지원)에 올리면 됩니다.
 
+### GitHub Pages 자동 배포 (권장)
+
+이 저장소에는 `.github/workflows/deploy.yml`이 포함되어 있어
+**`main` 또는 `claude/**` 브랜치에 push되면 자동으로 GitHub Pages에 배포**됩니다.
+
+**최초 1회만 해줄 것:**
+
+1. GitHub 저장소 → **Settings** → **Pages**
+2. **Source**를 **GitHub Actions**로 변경 → Save
+3. Actions 탭에서 워크플로 성공 확인
+4. 배포 URL: `https://<GitHub유저이름>.github.io/-/`
+
+이후엔 main에 merge할 때마다 자동 재배포됩니다.
+
+> Pages 서빙 경로가 `/-/` 하위이므로 워크플로가 `BASE_PATH=/-/`로 빌드합니다.
+> repo 이름을 바꿀 경우 `.github/workflows/deploy.yml`의 `BASE_PATH` 값을 함께 수정하세요.
+
 ## 조작
 
 - **셔터 버튼(빨간 원)** 또는 데스크톱에서는 **스페이스바** — 촬영
